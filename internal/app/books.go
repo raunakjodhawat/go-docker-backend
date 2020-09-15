@@ -10,9 +10,10 @@ type Book struct {
 	YearOfReRelease int
 }
 
-// Save stores data into db
+// Save stores data into db (POST)
 func (b *Book) Save() error {
 	filename := b.BookName + ".txt"
 	return ioutil.WriteFile(filename, []byte(b.BookName), 0600)
 }
 
+// Get all books from db (GET)
