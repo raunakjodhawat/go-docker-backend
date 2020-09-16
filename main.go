@@ -13,7 +13,7 @@ func booksHandler(w http.ResponseWriter, r *http.Request) {
 	bookName := r.URL.Path[len(baseUrl+booksUrl):]
 	book, err := Book.GetBook(bookName)
 	if err == nil {
-		fmt.Fprintf(w, "Found the Book, Author: %s, %s, %s", book.Author, book.ISBN, book.BookContent)
+		fmt.Fprintf(w, "Live reload is working the Book, Author: %s, %s, %s", book.Author, book.ISBN, book.BookContent)
 	} else {
 		fmt.Fprintf(w, "Not able to find %s, book", r.URL.Path[len(baseUrl+booksUrl):])
 	}
