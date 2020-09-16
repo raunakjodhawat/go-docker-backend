@@ -3,14 +3,26 @@ package main
 import (
 	Book "./internal/app/book"
 	"fmt"
+	"log"
+	"net/http"
 )
 
-func main() {
-	b := Book.Book{Author: []string{"Raunak Jodhawat"}, BookName: "RJ", ISBN: "HELLO", YearOfRelease: 2020, BookContent: []byte("Hello, this is my first book") }
-	b.SaveBook()
-
-	b1, err := Book.GetBook("RJ")
+const baseUrl = "/api/v1"
+const booksUrl = "/books/"
+func booksHandler(w http.ResponseWriter, r *http.Request) {
+	bookName := r.URL.Path[len(baseUrl+booksUrl):]
+	book, err := Book.GetBook(bookName)
 	if err == nil {
-		fmt.Println(string(b1.BookContent))
+		fmt.Fprintf(w, "Found the Book, Author: %s, %s, %s", book.Author, book.ISBN, book.BookContent)
+	} else {
+		fmt.Fprintf(w, "Not able to find %s, book", r.URL.Path[len(baseUrl+booksUrl):])
 	}
+
 }
+func main() {
+
+	http.HandleFunc(baseUrl+booksUrl, booksHandler)
+	log.Fatalln(http.ListenAndServe(":8080", nil))
+}
+
+//
