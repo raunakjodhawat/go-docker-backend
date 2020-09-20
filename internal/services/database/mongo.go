@@ -1,7 +1,8 @@
-package Mongo
+package database
 
 import (
 	"context"
+	"fmt"
 	DB "github.com/raunakjodhawat/go-docker-backend/configs"
 	"github.com/raunakjodhawat/go-docker-backend/internal/app/book"
 	"go.mongodb.org/mongo-driver/bson"
@@ -18,20 +19,20 @@ func getMongoClient() (*mongo.Client, context.Context) {
 	if err != nil {
 		panic(err)
 	}
-	defer client.Disconnect(ctx)
-	return client, ctx
 
+	return client, ctx
 }
 
-func MongoGetAllBooks() []Book.Book {
-	client, ctx := getMongoClient()
-	// Creating DB as Books, having Collection as Books
-	booksDB := client.Database("Books")
+func GetAllBooks() []Book.Book {
 
-	booksCollection := booksDB.Collection("Books")
+	client, ctx := getMongoClient()
+	defer client.Disconnect(ctx)
+	booksDB := client.Database("books")
+	booksCollection := booksDB.Collection("books")
 
 	var books []Book.Book
 	cursor, err := booksCollection.Find(ctx, bson.M{})
+	fmt.Println(cursor)
 	if err != nil {
 		panic(err)
 	}

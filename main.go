@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gorilla/mux"
-	Book "github.com/raunakjodhawat/go-docker-backend/internal/app/book"
+	"github.com/raunakjodhawat/go-docker-backend/internal/services"
 	"log"
 	"net/http"
 )
@@ -16,15 +16,15 @@ func booksRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
 	// GET All Books
-	router.HandleFunc(baseURL+booksURL, Book.GetAllBooks).Methods("GET")
+	router.HandleFunc(baseURL+booksURL, services.GetAllBooks).Methods("GET")
 	// GET Single book by ID
-	router.HandleFunc(baseURL+booksURL+"/{bookId}", Book.GetBookById).Methods("GET")
+	router.HandleFunc(baseURL+booksURL+"/{bookId}", services.GetBookById).Methods("GET")
 
 	// PUT a book
-	router.HandleFunc(baseURL+booksURL, Book.CreateBook).Methods("PUT")
+	router.HandleFunc(baseURL+booksURL, services.CreateBook).Methods("PUT")
 
 	// DELETE Single book by ID
-	router.HandleFunc(baseURL+booksURL+"/{bookId}", Book.RemoveBook).Methods("DELETE")
+	router.HandleFunc(baseURL+booksURL+"/{bookId}", services.RemoveBook).Methods("DELETE")
 
 	return router
 }
