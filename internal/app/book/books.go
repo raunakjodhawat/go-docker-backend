@@ -2,6 +2,8 @@
 package Book
 
 import (
+	"fmt"
+	"github.com/raunakjodhawat/go-docker-backend/internal/DB"
 	"net/http"
 )
 
@@ -15,7 +17,7 @@ type Book struct {
 }
 
 func GetAllBooks(w http.ResponseWriter, r *http.Request){
-
+	fmt.Fprintf(w, "%v", DB.GetAllBooks())
 }
 
 func GetBookById(w http.ResponseWriter, r *http.Request){
