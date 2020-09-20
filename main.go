@@ -1,8 +1,8 @@
 package main
 
 import (
-	Book "./internal/app/book"
 	"github.com/gorilla/mux"
+	Book "github.com/raunakjodhawat/go-docker-backend/internal/app/book"
 	"log"
 	"net/http"
 )
