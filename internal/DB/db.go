@@ -9,7 +9,7 @@ import (
 func GetAllBooks(dbName string) ([]Book.Book, error) {
 	switch dbName {
 	case "Mongo": {
-		return Mongo.MongoGetAllBooks(), errors.New("error with mongoDB connection")
+		return Mongo.MongoGetAllBooks(), nil
 	}
 	default:
 		return nil, errors.New("unsupported DB")
