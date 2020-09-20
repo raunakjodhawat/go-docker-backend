@@ -1,7 +1,10 @@
 // Package app
-package book
+package Book
 
-import "io/ioutil"
+import (
+	"io/ioutil"
+	"net/http"
+)
 
 // Book struct
 type Book struct {
@@ -33,4 +36,19 @@ func GetBook(bookName string) (*Book, error) {
 func (b *Book) DeleteBook() error {
 	filename := b.BookName + ".txt"
 	return ioutil.WriteFile(filename, []byte(b.BookName), 0600)
+}
+
+func GetAllBooks(w http.ResponseWriter, r *http.Request){
+
+}
+
+func GetBookById(w http.ResponseWriter, r *http.Request){
+
+}
+
+func RemoveBook(w http.ResponseWriter, r *http.Request){
+
+}
+func CreateBook(w http.ResponseWriter, r *http.Request){
+
 }

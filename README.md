@@ -18,3 +18,5 @@ Currently, it only supports mongodb. I plan to include an array of db options.
 
 
 Use-cases to quickly build scalable proof of concept backends
+
+Goal is to give full set of CRUD feature

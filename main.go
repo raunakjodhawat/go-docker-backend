@@ -2,27 +2,36 @@ package main
 
 import (
 	Book "./internal/app/book"
-	"fmt"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
 const baseUrl = "/api/v1"
 const booksUrl = "/books/"
-func booksHandler(w http.ResponseWriter, r *http.Request) {
-	bookName := r.URL.Path[len(baseUrl+booksUrl):]
-	book, err := Book.GetBook(bookName)
-	if err == nil {
-		fmt.Fprintf(w, "Live reload is working the Book, Author: %s, %s, %s", book.Author, book.ISBN, book.BookContent)
-	} else {
-		fmt.Fprintf(w, "Not able to find %s, book", r.URL.Path[len(baseUrl+booksUrl):])
-	}
 
+func booksRouter() *mux.Router {
+	// create a new instance of mux router
+	router := mux.NewRouter().StrictSlash(true)
+
+	// GET All Books
+	router.HandleFunc(baseUrl+booksUrl, Book.GetAllBooks).Methods("GET")
+	// GET Single book by ID
+	router.HandleFunc(baseUrl+booksUrl+"/{bookId}", Book.GetBookById).Methods("GET")
+
+	// PUT a book
+	router.HandleFunc(baseUrl+booksUrl, Book.CreateBook).Methods("PUT")
+
+	// DELETE Single book by ID
+	router.HandleFunc(baseUrl+booksUrl+"/{bookId}", Book.RemoveBook).Methods("DELETE")
+
+	return router
 }
+
+
 func main() {
-
-	http.HandleFunc(baseUrl+booksUrl, booksHandler)
-	log.Fatalln(http.ListenAndServe(":8080", nil))
+	// initialize Books router
+	booksRouter := booksRouter()
+	// Start serving on 8080 PORT
+	log.Fatalln(http.ListenAndServe(":8080", booksRouter))
 }
-
-//
