@@ -5,6 +5,7 @@ import (
 	DB "github.com/raunakjodhawat/go-docker-backend/configs"
 	"github.com/raunakjodhawat/go-docker-backend/internal/app/book"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
@@ -22,7 +23,7 @@ func getMongoClient() (*mongo.Client, context.Context) {
 	return client, ctx
 }
 
-func GetAllBooks() []Book.Book {
+func GetAllBooks() ([]Book.Book, error) {
 
 	client, ctx := getMongoClient()
 	defer client.Disconnect(ctx)
@@ -33,10 +34,24 @@ func GetAllBooks() []Book.Book {
 	cursor, err := booksCollection.Find(ctx, bson.M{})
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	if err = cursor.All(ctx, &books); err != nil {
-		panic(err)
+		return nil, err
 	}
-	return books
+	return books, err
+}
+
+func GetBookById(_id primitive.ObjectID) (Book.Book, error) {
+	client, ctx := getMongoClient()
+	defer client.Disconnect(ctx)
+	booksDB := client.Database("books")
+	booksCollection := booksDB.Collection("books")
+
+	var book Book.Book
+	err := booksCollection.FindOne(ctx, bson.D{{"_id", _id}}).Decode(&book)
+	if err != nil{
+		return Book.Book{}, err
+	}
+	return book, nil
 }

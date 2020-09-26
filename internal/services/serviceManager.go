@@ -15,9 +15,9 @@ func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(404)
 		w.Write([]byte("Error in getting all the books"))
+		return
 	}
 	json.NewEncoder(w).Encode(books)
-
 }
 
 func GetBookById(w http.ResponseWriter, r *http.Request) {
