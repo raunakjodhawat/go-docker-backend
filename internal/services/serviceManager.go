@@ -1,6 +1,7 @@
 package services
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/raunakjodhawat/go-docker-backend/internal/app/book"
@@ -9,10 +10,14 @@ import (
 )
 
 func GetAllBooks(w http.ResponseWriter, r *http.Request) {
-	books, _ := getAllBooks("mongo")
-	fmt.Println(books)
-	fmt.Println("hello world")
-	fmt.Fprintf(w, "%v", books)
+	books, err := getAllBooks("mongo")
+	w.Header().Set("Content-Type", "application/json")
+	if err != nil {
+		w.WriteHeader(404)
+		w.Write([]byte("Error in getting all the books"))
+	}
+	json.NewEncoder(w).Encode(books)
+
 }
 
 func GetBookById(w http.ResponseWriter, r *http.Request) {

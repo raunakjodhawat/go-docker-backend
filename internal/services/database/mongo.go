@@ -2,7 +2,6 @@ package database
 
 import (
 	"context"
-	"fmt"
 	DB "github.com/raunakjodhawat/go-docker-backend/configs"
 	"github.com/raunakjodhawat/go-docker-backend/internal/app/book"
 	"go.mongodb.org/mongo-driver/bson"
@@ -32,7 +31,7 @@ func GetAllBooks() []Book.Book {
 
 	var books []Book.Book
 	cursor, err := booksCollection.Find(ctx, bson.M{})
-	fmt.Println(cursor)
+
 	if err != nil {
 		panic(err)
 	}
